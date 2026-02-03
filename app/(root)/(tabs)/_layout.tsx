@@ -14,11 +14,11 @@ const TabIcon = ({
     className={`flex flex-row justify-center items-center rounded-full ${focused ? "bg-general-300" : ""}`}
   >
     <View
-      className={`rounded-full w-9 h-9 items-center justify-center ${focused ? "bg-general-400" : ""}`}
+      className={`rounded-full w-9 h-9 items-center justify-center ${focused ? "bg-white" : ""}`}
     >
       <Image
         source={source}
-        tintColor="white"
+        tintColor={focused ? "black" : "gray"}
         resizeMode="contain"
         className="w-6 h-6"
       />
@@ -31,22 +31,14 @@ export default function Layout() {
     <Tabs
       initialRouteName="home"
       screenOptions={{
-        tabBarActiveTintColor: "white",
-        tabBarInactiveTintColor: "white",
-        tabBarShowLabel: false,
+        tabBarActiveTintColor: "green",
+        tabBarInactiveTintColor: "grey",
         tabBarStyle: {
-          backgroundColor: "#333333",
-          borderRadius: 20,
-          paddingBottom: 0, // ios only
-          overflow: "hidden",
-          marginHorizontal: 20,
-          marginBottom: 20,
-          height: 50,
-          // display: "flex",
-          // flexDirection: "row",
-          // justifyContent: "space-around",
-          // alignItems: "center",
+          borderTopLeftRadius: 5,
+          borderTopRightRadius: 5,
+          paddingTop: 3,
           position: "absolute",
+
         },
       }}
     >
@@ -63,23 +55,14 @@ export default function Layout() {
       <Tabs.Screen
         name="rides"
         options={{
-          title: "Rides",
+          title: "New Ride",
           headerShown: false,
           tabBarIcon: ({ focused }) => (
             <TabIcon source={icons.list} focused={focused} />
           ),
         }}
       />
-      <Tabs.Screen
-        name="chat"
-        options={{
-          title: "Chat",
-          headerShown: false,
-          tabBarIcon: ({ focused }) => (
-            <TabIcon source={icons.chat} focused={focused} />
-          ),
-        }}
-      />
+    
       <Tabs.Screen
         name="profile"
         options={{
