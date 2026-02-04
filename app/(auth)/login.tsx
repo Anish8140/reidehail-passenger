@@ -11,6 +11,7 @@ export default function Login() {
   const { login } = useAuth();
   const [form, setForm] = useState({ email: "", password: "" });
   const [loading, setLoading] = useState(false);
+  const [rememberMe, setRememberMe] = useState(false);
 
   const onSignInPress = useCallback(async () => {
     if (!form.email.trim() || !form.password) {
@@ -38,48 +39,51 @@ export default function Login() {
         </View>
 
         <View className="px-6 py-8 -mt-6 bg-white rounded-t-3xl">
-          <Text className="text-3xl text-gray-900 font-JakartaBold mb-2">
+          <Text className="text-2xl font-JakartaBold text-gray-900 mb-1">
             Welcome Back
           </Text>
-          <Text className="text-base text-gray-600 font-JakartaRegular mb-8">
+          <Text className="text-sm text-gray-600 font-JakartaRegular mb-6">
             Login to continue your journey
           </Text>
-          <InputField
-            label="Email"
-            placeholder="Enter email"
-            icon={icons.email}
-            textContentType="emailAddress"
-            value={form.email}
-            onChangeText={(value) => setForm({ ...form, email: value })}
-          />
 
-          <InputField
-            label="Password"
-            placeholder="Enter password"
-            icon={icons.lock}
-            secureTextEntry
-            textContentType="password"
-            value={form.password}
-            onChangeText={(value) => setForm({ ...form, password: value })}
-          />
+          <View className="mb-4">
+            <InputField
+              label="Email"
+              placeholder="Enter email"
+              icon={icons.email}
+              textContentType="emailAddress"
+              value={form.email}
+              onChangeText={(value) => setForm({ ...form, email: value })}
+              containerStyle="mb-4"
+            />
+
+            <InputField
+              label="Password"
+              placeholder="Enter password"
+              icon={icons.lock}
+              secureTextEntry
+              textContentType="password"
+              value={form.password}
+              onChangeText={(value) => setForm({ ...form, password: value })}
+              containerStyle="mb-1"
+            />
+          </View>
 
           <CustomButton
             title={loading ? "Signing in…" : "Login"}
             onPress={onSignInPress}
-            className="mt-8"
+            className="shadow-none py-4 mb-4"
             disabled={loading}
+            bgVariant="success"
           />
 
-          <View className="flex-row items-center justify-center mt-8">
-            <Text className="text-base text-gray-600 font-JakartaRegular">
-              Don't have an account?{" "}
-            </Text>
-            <Link href="/signup">
-              <Text className="text-base text-primary-500 font-JakartaSemiBold">
-                Create an account
-              </Text>
-            </Link>
-          </View>
+          <Link
+            href="/signup"
+            className="text-sm text-center text-gray-500 pb-8"
+          >
+            Don't have an account?{" "}
+            <Text className="text-primary-500 font-JakartaSemiBold">Create an account</Text>
+          </Link>
         </View>
       </View>
     </ScrollView>
