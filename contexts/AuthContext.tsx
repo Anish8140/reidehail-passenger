@@ -1,11 +1,24 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useRouter } from "expo-router";
 import React, { createContext, useCallback, useContext, useEffect, useState } from "react";
-import { API_BASE_URL } from "@/src/config";
-
 const TOKEN_KEY = "@auth/token";
 const USER_KEY = "@auth/user";
 const API_BASE_URL_KEY = "@auth/api_base_url";
+
+const RENDER_API = "https://reidehail-backend.onrender.com";
+
+/** Treat saved URL as outdated if it's a local/dev URL so we always use Render by default. */
+function isLocalOrLegacyUrl(url: string): boolean {
+  const u = url.trim().toLowerCase();
+  return (
+    u.includes(":5000") ||
+    u.includes("localhost") ||
+    u.includes("127.0.0.1") ||
+    u.includes("10.0.2.2") ||
+    u.startsWith("http://192.168.") ||
+    u.startsWith("http://10.")
+  );
+}
 
 export type UserRole = "passenger" | "driver" | "admin";
 
@@ -14,6 +27,7 @@ export interface AuthUser {
   email?: string;
   name?: string;
   role: UserRole;
+  createdAt?: string;
 }
 
 interface AuthSession {
@@ -40,25 +54,34 @@ export function useAuth() {
   return ctx;
 }
 
-function normalizeUser(raw: { id: string; email?: string; name?: string; role?: string }): AuthUser {
+function normalizeUser(raw: { id: string; email?: string; name?: string; role?: string; createdAt?: string }): AuthUser {
   const role = (raw.role === "driver" || raw.role === "admin" ? raw.role : "passenger") as UserRole;
   return {
     id: raw.id,
     email: raw.email,
     name: raw.name,
     role,
+    createdAt: raw.createdAt,
   };
 }
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [session, setSession] = useState<AuthSession | null>(null);
   const [isLoading, setIsLoading] = useState(true);
-  const [apiBaseUrl, setApiBaseUrlState] = useState(API_BASE_URL);
+  const [apiBaseUrl, setApiBaseUrlState] = useState(RENDER_API);
   const router = useRouter();
 
   useEffect(() => {
     AsyncStorage.getItem(API_BASE_URL_KEY).then((saved) => {
-      if (saved && saved.trim()) setApiBaseUrlState(saved.trim().replace(/\/$/, ""));
+      const trimmed = saved?.trim()?.replace(/\/$/, "") ?? "";
+      if (trimmed && !isLocalOrLegacyUrl(trimmed)) {
+        setApiBaseUrlState(trimmed);
+      } else {
+        setApiBaseUrlState(RENDER_API);
+        if (trimmed && isLocalOrLegacyUrl(trimmed)) {
+          AsyncStorage.setItem(API_BASE_URL_KEY, RENDER_API);
+        }
+      }
     });
   }, []);
 
@@ -132,7 +155,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         setSession({ user, token });
         return { user };
       } catch (e) {
-        return { error: `Cannot reach backend at ${apiBaseUrl}. Use your computer's IP if on a real device (e.g. http://192.168.1.5:5000).` };
+        return { error: `Cannot reach backend at ${apiBaseUrl}. Check your connection or change Backend URL on Login.` };
       }
     },
     [apiBaseUrl]
@@ -164,7 +187,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         setSession({ user, token });
         return { user };
       } catch (e) {
-        return { error: `Cannot reach backend at ${apiBaseUrl}. Use your computer's IP if on a real device (e.g. http://192.168.1.5:5000).` };
+        return { error: `Cannot reach backend at ${apiBaseUrl}. Check your connection or change Backend URL on Login.` };
       }
     },
     [apiBaseUrl]

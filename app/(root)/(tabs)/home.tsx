@@ -34,7 +34,7 @@ const Home = () => {
                 onPress={() => console.log('sign out')}
                 className="justify-center items-center w-10 h-10 rounded-full bg-white"
               >
-                <Image source={icons.out} className="w-4 h-4" />
+                <Image source={icons.out} className="w-4 h-4 text-white" />
               </TouchableOpacity>
             </View>
 
