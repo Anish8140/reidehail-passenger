@@ -1,10 +1,10 @@
 import { Link, router } from "expo-router";
 import { useCallback, useState } from "react";
-import { Alert, Image, ScrollView, Text, View } from "react-native";
+import { Alert, ScrollView, Text, View } from "react-native";
 
 import CustomButton from "@/components/CustomButton";
 import InputField from "@/components/InputField";
-import { icons, images } from "@/constants";
+import { icons } from "@/constants";
 import { useAuth } from "@/contexts/AuthContext";
 
 export default function Login() {
@@ -29,21 +29,21 @@ export default function Login() {
   }, [form, login]);
 
   return (
-    <ScrollView className="flex-1 bg-white">
+    <ScrollView className="flex-1 bg-white" keyboardShouldPersistTaps="handled">
       <View className="flex-1 bg-white">
-        <View className="relative w-full h-[250px]">
-          <Image source={images.signUpCar} className="z-0 w-full h-[250px]" />
-          <View className="absolute bottom-5 left-5">
-            <View className="w-32 h-10 mb-1">
-              <images.logoHorizontal width="100%" height="100%" />
-            </View>
-            <Text className="text-2xl text-black font-JakartaSemiBold">
-              Welcome 👋
-            </Text>
-          </View>
+        <View className="relative w-full h-[200px] bg-primary-500 justify-center items-center">
+          <Text className="text-5xl text-white font-JakartaBold tracking-tight">
+            Cab Connect
+          </Text>
         </View>
 
-        <View className="p-5">
+        <View className="px-6 py-8 -mt-6 bg-white rounded-t-3xl">
+          <Text className="text-3xl text-gray-900 font-JakartaBold mb-2">
+            Welcome Back
+          </Text>
+          <Text className="text-base text-gray-600 font-JakartaRegular mb-8">
+            Login to continue your journey
+          </Text>
           <InputField
             label="Email"
             placeholder="Enter email"
@@ -64,18 +64,22 @@ export default function Login() {
           />
 
           <CustomButton
-            title={loading ? "Signing in…" : "Sign In"}
+            title={loading ? "Signing in…" : "Login"}
             onPress={onSignInPress}
-            className="mt-6"
+            className="mt-8"
             disabled={loading}
           />
-          <Link
-            href="/signup"
-            className="text-lg text-center text-general-200 mt-10"
-          >
-            Don't have an account?{" "}
-            <Text className="text-primary-500">Sign Up</Text>
-          </Link>
+
+          <View className="flex-row items-center justify-center mt-8">
+            <Text className="text-base text-gray-600 font-JakartaRegular">
+              Don't have an account?{" "}
+            </Text>
+            <Link href="/signup">
+              <Text className="text-base text-primary-500 font-JakartaSemiBold">
+                Create an account
+              </Text>
+            </Link>
+          </View>
         </View>
       </View>
     </ScrollView>

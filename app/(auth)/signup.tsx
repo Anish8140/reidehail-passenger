@@ -1,17 +1,16 @@
- 
+
 import { Link, router } from "expo-router";
 import { useState } from "react";
-import { Alert, Image, ScrollView, Text, View } from "react-native";
+import { Image, ScrollView, Text, View } from "react-native";
 import { ReactNativeModal } from "react-native-modal";
 
 import CustomButton from "@/components/CustomButton";
 import InputField from "@/components/InputField";
 import OAuth from "@/components/OAuth";
 import { icons, images } from "@/constants";
-import { fetchAPI } from "@/lib/fetch";
 
 const SignUp = () => {
-  
+
   const [showSuccessModal, setShowSuccessModal] = useState(false);
 
   const [form, setForm] = useState({
@@ -25,7 +24,7 @@ const SignUp = () => {
     code: "",
   });
 
-   
+
   // const onPressVerify = async () => {
   //   if (!isLoaded) return;
   //   try {
@@ -66,20 +65,21 @@ const SignUp = () => {
 
 
   return (
-    <ScrollView className="flex-1 bg-white">
+    <ScrollView className="flex-1 bg-white" keyboardShouldPersistTaps="handled">
       <View className="flex-1 bg-white">
-        <View className="relative w-full h-[250px]">
-          <Image source={images.signUpCar} className="z-0 w-full h-[250px]" />
-          <View className="absolute bottom-5 left-5">
-            <View className="w-32 h-10 mb-1">
-              <images.logoHorizontal width="100%" height="100%" />
-            </View>
-            <Text className="text-2xl text-black font-JakartaSemiBold">
-              Create Your Account
-            </Text>
-          </View>
+        <View className="relative w-full h-[200px] bg-primary-500 justify-center items-center">
+          <Text className="text-5xl text-white font-JakartaBold tracking-tight">
+            Cab Connect
+          </Text>
         </View>
-        <View className="p-5">
+
+        <View className="px-6 py-8 -mt-6 bg-white rounded-t-3xl">
+          <Text className="text-3xl text-gray-900 font-JakartaBold mb-2">
+            Create Account
+          </Text>
+          <Text className="text-base text-gray-600 font-JakartaRegular mb-8">
+            Join effortlessly with a simple signup process
+          </Text>
           <InputField
             label="Name"
             placeholder="Enter name"
@@ -112,13 +112,16 @@ const SignUp = () => {
             className="mt-6"
           />
           <OAuth />
-          <Link
-            href="/login"
-            className="text-lg text-center text-general-200 mt-10"
-          >
-            Already have an account?{" "}
-            <Text className="text-primary-500">Log In</Text>
-          </Link>
+          <View className="flex-row items-center justify-center mt-8">
+            <Text className="text-base text-gray-600 font-JakartaRegular">
+              Already have an account?{" "}
+            </Text>
+            <Link href="/login">
+              <Text className="text-base text-primary-500 font-JakartaSemiBold">
+                Login
+              </Text>
+            </Link>
+          </View>
         </View>
         <ReactNativeModal
           isVisible={verification.state === "pending"}

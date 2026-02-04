@@ -1,12 +1,12 @@
 import {
-  TextInput,
-  View,
-  Text,
   Image,
-  KeyboardAvoidingView,
-  TouchableWithoutFeedback,
   Keyboard,
+  KeyboardAvoidingView,
   Platform,
+  Text,
+  TextInput,
+  TouchableWithoutFeedback,
+  View,
 } from "react-native";
 
 import { InputFieldProps } from "@/types/type";
@@ -28,18 +28,19 @@ const InputField = ({
     >
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
         <View className="my-2 w-full">
-          <Text className={`text-lg font-JakartaSemiBold mb-3 ${labelStyle}`}>
+          <Text className={`text-sm font-JakartaMedium mb-2 text-gray-700 ${labelStyle}`}>
             {label}
           </Text>
           <View
-            className={`flex flex-row justify-start items-center relative bg-neutral-100 rounded-full border border-neutral-100 focus:border-primary-500  ${containerStyle}`}
+            className={`flex flex-row justify-start items-center relative bg-white rounded-lg border border-gray-300 focus:border-primary-500 ${containerStyle}`}
           >
             {icon && (
-              <Image source={icon} className={`w-6 h-6 ml-4 ${iconStyle}`} />
+              <Image source={icon} className={`w-5 h-5 ml-4 ${iconStyle}`} resizeMode="contain" />
             )}
             <TextInput
-              className={`rounded-full p-4 font-JakartaSemiBold text-[15px] flex-1 ${inputStyle} text-left`}
+              className={`rounded-lg py-3 px-4 font-JakartaRegular text-base flex-1 ${inputStyle} text-left`}
               secureTextEntry={secureTextEntry}
+              placeholderTextColor="#9ca3af"
               {...props}
             />
           </View>
